@@ -3,12 +3,14 @@
 List<string> feladatok = new();
 
 while (!kilepes)
-{
+{    
     Console.WriteLine("=== Feladatlista ===");
+    Console.WriteLine();
     Console.WriteLine("1. Új feladat");
     Console.WriteLine("2. Feladat törlése");
     Console.WriteLine("3. Feladatok listázása");
     Console.WriteLine("4. Kilépés");
+    Console.WriteLine();
     Console.Write("Válassz egy opciót: ");
     string? valasztas = Console.ReadLine();
     Console.WriteLine();
@@ -19,7 +21,7 @@ while (!kilepes)
             UjFeladatHozzaadasa(feladatok);
             break;
         case "2":
-            // Feladat törlése
+            FeladatTorlese(feladatok);
             break;
         case "3":
             FeladatListazasa(feladatok);
@@ -33,13 +35,13 @@ while (!kilepes)
     }
 }
 
-void UjFeladatHozzaadasa(List<string> feladat)
+void UjFeladatHozzaadasa(List<string> lista)
 {
     Console.Write("Add meg az új feladatot: ");
     string? ujFeladat = Console.ReadLine();
     if (!string.IsNullOrWhiteSpace(ujFeladat))
     {
-        feladat.Add(ujFeladat);
+        lista.Add(ujFeladat);
         Console.WriteLine("Feladat hozzáadva!");
     }
     else
@@ -57,12 +59,33 @@ void FeladatListazasa(List<string> lista)
         Console.WriteLine();
         return;
     }
+
+    for (int i = 0; i < lista.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {lista[i]}");
+    }
+    Console.WriteLine();
+}
+
+void FeladatTorlese(List<string> lista)
+{
+    if (lista.Count == 0)
+    {
+        Console.WriteLine("Nincs feladat a listában.");
+        Console.WriteLine();
+        return;
+    }
+    FeladatListazasa(lista);
+    Console.Write("Add meg a törölni kívánt feladat számát: ");
+    string? input = Console.ReadLine();
+    if (int.TryParse(input, out int index) && index > 0 && index <= lista.Count)
+    {
+        lista.RemoveAt(index - 1);
+        Console.WriteLine("Feladat törölve!");
+    }
     else
     {
-        for (int i = 0; i < lista.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {lista[i]}");
-        }
-        Console.WriteLine();
-    }        
+        Console.WriteLine("Érvénytelen szám!");
+    }
+    Console.WriteLine();
 }
