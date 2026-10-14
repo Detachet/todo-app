@@ -1,5 +1,7 @@
 ﻿bool kilepes = false;
 
+List<string> feladatok = new();
+
 while (!kilepes)
 {
     Console.WriteLine("=== Feladatlista ===");
@@ -14,13 +16,13 @@ while (!kilepes)
     switch (valasztas)
     {
         case "1":
-            // Új feladat hozzáadása
+            UjFeladatHozzaadasa(feladatok);
             break;
         case "2":
             // Feladat törlése
             break;
         case "3":
-            // Feladatok listázása
+            FeladatListazasa(feladatok);
             break;
         case "4":
             kilepes = true;
@@ -29,4 +31,38 @@ while (!kilepes)
             Console.WriteLine("Érvénytelen választás!");
             break;
     }
+}
+
+void UjFeladatHozzaadasa(List<string> feladat)
+{
+    Console.Write("Add meg az új feladatot: ");
+    string? ujFeladat = Console.ReadLine();
+    if (!string.IsNullOrWhiteSpace(ujFeladat))
+    {
+        feladat.Add(ujFeladat);
+        Console.WriteLine("Feladat hozzáadva!");
+    }
+    else
+    {
+        Console.WriteLine("A feladat nem lehet üres!");
+    }
+    Console.WriteLine();
+}
+
+void FeladatListazasa(List<string> lista)
+{
+    if (lista.Count == 0)
+    {
+        Console.WriteLine("Nincs feladat a listában.");
+        Console.WriteLine();
+        return;
+    }
+    else
+    {
+        for (int i = 0; i < lista.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {lista[i]}");
+        }
+        Console.WriteLine();
+    }        
 }
