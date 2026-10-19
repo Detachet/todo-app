@@ -1,11 +1,14 @@
-﻿using TodoApp;
+﻿using System.Text.Json;
+using TodoApp;
+
+const string FajlNev = "feladatok.json";
+var jsonBeallitasok = new JsonSerializerOptions { WriteIndented = true };
 
 bool kilepes = false;
-
-List<TodoItem> feladatok = new();
+List<TodoItem> feladatok = FeladatokBetoltese();
 
 while (!kilepes)
-{    
+{ 
     Console.WriteLine("=== Feladatlista ===");
     Console.WriteLine();
     Console.WriteLine("1. Új feladat");
@@ -22,15 +25,18 @@ while (!kilepes)
     {
         case "1":
             UjFeladatHozzaadasa(feladatok);
+            FeladatokMentese(feladatok);
             break;
         case "2":
             FeladatTorlese(feladatok);
+            FeladatokMentese(feladatok);
             break;
         case "3":
             FeladatListazasa(feladatok);
             break;
         case "4":
             FeladatKesznekJelolese(feladatok);
+            FeladatokMentese(feladatok);
             break;
         case "5":
             kilepes = true;
@@ -112,3 +118,27 @@ int? SorszamBekeres(List<TodoItem> lista, string muvelet)
     Console.WriteLine();
     return null;
 }
+
+List<TodoItem> FeladatokBetoltese()
+{
+    if (File.Exists(FajlNev))
+        return new();
+
+    try
+    {
+        string json = File.ReadAllText(FajlNev);
+        return JsonSerializer.Deserialize<List<TodoItem>>(json) ?? new();
+    }
+    catch (JsonException)
+    {
+        Console.WriteLine("A mentett fájl sérült, üres listával indulunk");
+        Console.WriteLine();
+        return new();
+    }
+}
+void FeladatokMentese(List<TodoItem> lista)
+{
+    string json = JsonSerializer.Serialize(lista, jsonBeallitasok);
+    File.WriteAllText(FajlNev, json);
+}
+
