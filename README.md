@@ -1,10 +1,10 @@
 # TodoApp
 
-A small console to-do lsit application in C# (.NET 10).
+A small console to-do list application in C# (.NET 10).
 
 ## Features
 
-- Add, list and delete taks
+- Add, list and delete tasks
 - Marks tasks as completed
 - Tasks are saved to a JSON file and loaded on startup
 - Input validation for invalid menu choice and task numbers
